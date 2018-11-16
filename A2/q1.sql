@@ -1,5 +1,5 @@
 SET search_path TO parlgov;
-DROP TABLE IF EXISTS q1;
+DROP TABLE IF EXISTS q1 cascade;
 
 -- You must not change this table definition.
 CREATE TABLE q1 (
@@ -7,13 +7,12 @@ CREATE TABLE q1 (
 	countryName VARCHAR(50),
 	partyName VARCHAR(100), 
 	voteRange VARCHAR(20)
-	
 );
 
-DROP VIEW IF EXISTS country_result;
-DROP VIEW IF EXISTS description;
-DROP VIEW IF EXISTS final_election_result;
-DROP VIEW IF EXISTS election_results;
+DROP VIEW IF EXISTS country_result CASCADE;
+DROP VIEW IF EXISTS description CASCADE;
+DROP VIEW IF EXISTS final_election_result CASCADE;
+DROP VIEW IF EXISTS election_results CASCADE;
 
 
 CREATE VIEW country_result 
@@ -52,11 +51,12 @@ AS SELECT party_id, election_year,avg_percentage,
     END 
 FROM final_election_result;
 
-SELECT  election_year as year, countryName, partyName, description.case as voteRange 
-FROM description NATURAL JOIN country_result;
+
 
 -- CREATE VIEW result AS
 --     SELECT country_result.name as country_name, election_result.name as party_name
 --     FROM coutry_result JOIN election_result ON country_name.party_id = election_result.party_id
 
 
+insert into q1 SELECT election_year as year, countryName, partyName, description.case as voteRange 
+FROM description NATURAL JOIN country_result;
