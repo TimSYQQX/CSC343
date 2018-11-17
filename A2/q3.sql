@@ -27,12 +27,12 @@ where extract(year from e_date) >= 2001 and extract(year from e_date) <= 2016
 group by(country_id, year);
 
 create VIEW fit_countries as 
-select distinct country_id
-from participationRatio_in_period
-except
+--select distinct country_id
+--from participationRatio_in_period
+--except
 select distinct p1.country_id
 from participationRatio_in_period p1,participationRatio_in_period p2
-where p1.country_id = p2.country_id and p1.year > p2.year and p1.participationRatio < p2.participationRatio;
+where p1.country_id = p2.country_id and p1.year > p2.year and p1.participationRatio >= p2.participationRatio;
 
 create VIEW final_countries as
 select fit_countries.country_id, year, participationRatio
