@@ -52,13 +52,16 @@ group by country_id;
 create view r8_10_country as
 select country_id, count(left_right) as r8_10
 from party_position_with_country
-where left_right > 8 and left_right <= 10;
+where left_right > 8 and left_right <= 10
 group by country_id;
 
-create view coutry_interval AS
+create view country_interval AS
 select country_id, r0_2, r2_4, r4_6, r6_8, r8_10
-from r0_2_country join r4_6_country join r4_6_country join r6_8_country join r8_10_country
+from r0_2_country natural join r2_4_country natural join r4_6_country natural join r6_8_country natural join r8_10_country;
 
+create view country_name_interval as 
+select name, r0_2, r2_4, r4_6, r6_8, r8_10
+from country_interval join country on country_id = id;
 -- the answer to the query 
--- INSERT INTO q4 
+INSERT INTO q4 select * from country_name_interval;
 
